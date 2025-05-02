@@ -1,0 +1,17 @@
+# GUI framework
+kivy==2.1.0
+
+# Typing extensions for TypedDict and advanced type hinting
+typing-extensions>=4.0.0
+
+# Testing framework
+pytest>=7.0.0
+
+# Static type checking
+mypy>=1.0.0
+
+# Build tool for standalone executables (optional)
+pyinstaller>=5.0
+
+# Internationalization support (optional)
+babel>=2.9.0
