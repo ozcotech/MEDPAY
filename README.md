@@ -74,3 +74,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Developed by Özkan Cömert ([ozcotech](https://github.com/ozcotech)), 2025
+
+## 🛡️ Trademark Notice
+
+MEDPAY is a trademark of Özkan Cömert.  
+All rights to the name and brand identity are reserved by the developer.  
+This project is not affiliated with any other entity using similar names.
