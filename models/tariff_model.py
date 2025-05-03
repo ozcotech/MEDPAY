@@ -27,7 +27,19 @@ class TariffModel:
 
     def get_non_monetary_fee(self, dispute_type: str, party_key: str) -> Optional[float]:
         """Returns the fee for non-monetary disputes based on type and party count."""
-        return self.non_monetary_disputes.get(dispute_type, {}).get(party_key)
+        # Convert the party key format if needed (from UI format to data format)
+        mapped_party_key = self._map_party_key(party_key)
+        return self.non_monetary_disputes.get(dispute_type, {}).get(mapped_party_key)
+
+    def _map_party_key(self, key: str) -> str:
+        """Maps UI friendly party keys to data structure keys."""
+        key_mapping = {
+            "2_kisi": "2_parties",
+            "3_5_kisi": "3_to_5_parties",
+            "6_10_kisi": "6_to_10_parties",
+            "11_ve_uzeri": "11_or_more_parties"
+        }
+        return key_mapping.get(key, key)
 
     def get_monetary_brackets(self) -> Dict[str, MonetaryBracket]:
         """Returns all monetary dispute brackets."""
@@ -35,8 +47,20 @@ class TariffModel:
 
     def get_minimum_fee(self, category: str) -> float:
         """Returns the minimum fee for a given category."""
-        return self.minimum_fees.get(category, 0.0)
+        # Map Turkish categories to English if needed
+        category_mapping = {
+            "genel": "general", 
+            "ortaklik_ve_ticari": "commercial_or_joint"
+        }
+        mapped_category = category_mapping.get(category, category)
+        return self.minimum_fees.get(mapped_category, 0.0)
 
     def get_serial_dispute_fee(self, category: str) -> float:
         """Returns the fixed fee for serial disputes."""
-        return self.serial_dispute_fees.get(category, 0.0)
+        # Map Turkish categories to English if needed
+        category_mapping = {
+            "ticari": "commercial", 
+            "diger": "other"
+        }
+        mapped_category = category_mapping.get(category, category)
+        return self.serial_dispute_fees.get(mapped_category, 0.0)
