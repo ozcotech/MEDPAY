@@ -13,12 +13,23 @@ from typing import Dict, TypedDict, Optional
 TARIFF_VERSION: int = 2025
 
 class NonMonetaryBracket(TypedDict):
-    """Fees based on the number of parties"""
+    """Represents 1-hour mediation fees for non-monetary disputes.
+
+    If there are exactly 2 parties, the amount is per person.
+    If there are 3 or more parties, the amount is a flat total per hour.
+    Final fee = hourly fee × 2 (due to 2-hour minimum rule) regardless of outcome.
+    """
     _2_parties: float
     _3_to_5_parties: float
     _6_to_10_parties: float
     _11_or_more_parties: float
 
+# These values are taken from the official 2025 mediation fee schedule.
+# All values represent 1-hour fees. Actual calculation is done based on:
+# - Party count
+# - Dispute type
+# - Agreement status
+# - And the rule that the total fee must be for at least 2 hours.
 # Non-monetary disputes
 SECTION_ONE: Dict[str, NonMonetaryBracket] = {
     "family_law": {
