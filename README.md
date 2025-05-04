@@ -57,7 +57,9 @@ This repo will include installation instructions and packaging guides once the U
 * [x] Tariff constants defined (`tariffs_2025.py`)
 * [x] Folder structure initialized
 * [x] Naming conventions standardized (English code / Turkish data)
-* [ ] TariffModel and fee calculation engine (WIP)
+* [x] TariffModel implemented (`tariff_model.py`)
+* [x] FeeCalculator implemented (`fee_calculator.py`)
+* [x] FeeController implemented (`fee_controller.py`)
 * [ ] UI screens setup
 * [ ] Tests and validation
 
