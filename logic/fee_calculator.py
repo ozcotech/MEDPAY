@@ -65,10 +65,19 @@ class FeeCalculator:
             if not dispute_type or not party_key:
                 raise ValueError("Dispute type and party key must be provided for non-monetary disputes.")
 
-            # Retrieve the fee for the specified non-monetary dispute type and party key
-            non_monetary_fee = self.model.get_non_monetary_fee(dispute_type, party_key)
-            if non_monetary_fee is not None:
-                fee = non_monetary_fee
+            # New logic for non-monetary fee calculation based on agreement and party count
+            if is_agreement:
+                # Use the 1-hour rate and multiply by 2 for minimum required 2 hours
+                one_hour_fee = self.model.get_non_monetary_fee(dispute_type, party_key)
+                if one_hour_fee is not None:
+                    fee = one_hour_fee * 2
+            else:
+                # Non-agreement (e.g., state-paid), apply adjusted calculation
+                one_hour_fee = self.model.get_non_monetary_fee(dispute_type, party_key)
+                if party_key == "2_kisi" and one_hour_fee is not None:
+                    fee = one_hour_fee * 2 * 2  # 2 parties * 2 hours
+                elif one_hour_fee is not None:
+                    fee = one_hour_fee * 2  # Group fee * 2 hours
 
         # If it's a serial dispute, compare and take the higher fee.
         if is_serial:
