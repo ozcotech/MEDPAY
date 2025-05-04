@@ -31,6 +31,26 @@ class TariffModel:
         mapped_party_key = self._map_party_key(party_key)
         return self.non_monetary_disputes.get(dispute_type, {}).get(mapped_party_key)
 
+    def get_non_monetary_agreement_fee(self, dispute_type: str, party_key: str) -> Optional[float]:
+        """Calculates the total fee for non-monetary disputes when parties reach an agreement (2 hours minimum)."""
+        mapped_party_key = self._map_party_key(party_key)
+        hourly_fee = self.non_monetary_disputes.get(dispute_type, {}).get(mapped_party_key)
+        if hourly_fee is not None:
+            return hourly_fee * 2
+        return None
+
+    def get_non_monetary_nonagreement_fee(self, dispute_type: str, party_key: str) -> Optional[float]:
+        """Calculates the total fee for non-monetary disputes when no agreement is reached (paid by the state)."""
+        mapped_party_key = self._map_party_key(party_key)
+        hourly_fee = self.non_monetary_disputes.get(dispute_type, {}).get(mapped_party_key)
+        if hourly_fee is None:
+            return None
+
+        if party_key == "2_kisi":
+            return hourly_fee * 4  # 2 parties × 2 hours
+        else:
+            return hourly_fee * 2  # 2+ parties × 2 hours
+
     def _map_party_key(self, key: str) -> str:
         """Maps UI friendly party keys to data structure keys."""
         key_mapping = {
