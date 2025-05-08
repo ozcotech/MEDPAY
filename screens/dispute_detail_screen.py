@@ -13,8 +13,21 @@ class DisputeDetailScreen(Screen):
 
         self.layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(15))
 
+        category_labels = {
+            "employment_dispute": "İşçi-İşveren Uyuşmazlığı",
+            "commercial": "Ticari Uyuşmazlık",
+            "consumer": "Tüketici Uyuşmazlığı",
+            "rental_neighbor_condo": "Kira/Komşu/Kat Mülkiyeti",
+            "dissolution_of_partnership": "Ortaklığın Giderilmesi",
+            "family_law": "Aile Hukuku",
+            "other": "Diğer"
+        }
+
+        selected_key = App.get_running_app().selected_dispute.get("kategori", "other")
+        category_label = category_labels.get(selected_key, "Diğer")
+
         self.title_label = Label(
-            text="Uyuşmazlık Detayları",
+            text=f"Uyuşmazlık Kategorisi: {category_label}",
             font_size=dp(22),
             size_hint=(1, 0.2)
         )
