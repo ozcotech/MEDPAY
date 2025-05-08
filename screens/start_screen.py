@@ -23,15 +23,17 @@ class StartScreen(Screen):
         
         # Start button
         start_button = Button(
-            text="Giriş",
+            text="Giriş",  # Button text
             size_hint=(1, 0.2),
             font_size=dp(18)
         )
-        start_button.bind(on_release=self.goto_next)
+        # Bind the button's on_release event to the goto_next method
+        start_button.bind(on_release=self.goto_next) 
         layout.add_widget(start_button)
         
         self.add_widget(layout)
 
     def goto_next(self, instance):
         # This part will be changed when the next screen is defined
-        self.manager.current = "dispute_type"  # placeholder screen name
+        # Change the current screen in the ScreenManager to "dispute_type"
+        self.manager.current = "dispute_type"
