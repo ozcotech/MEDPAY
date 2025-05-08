@@ -36,6 +36,6 @@ class DisputeTypeScreen(Screen):
 
     def select_dispute_type(self, dispute_key, *args):
         app = App.get_running_app()
-        app.secilen_uyusmazlik["tur"] = dispute_key
+        app.selected_dispute["tur"] = dispute_key
         # Navigate to the next screen after selecting dispute type
         self.manager.current = "dispute_detail"
