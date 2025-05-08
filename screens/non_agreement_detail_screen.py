@@ -37,7 +37,17 @@ class NonAgreementDetailScreen(Screen):
     def on_enter(self):
         app = App.get_running_app()
         dispute_category = app.selected_dispute.get("kategori", "Belirtilmemiş")
-        self.selected_dispute_label.text = f"Uyuşmazlık Kategorisi: {dispute_category}"
+        category_mapping = {
+            "employment_dispute": "İşçi-İşveren Uyuşmazlığı",
+            "commercial": "Ticari Uyuşmazlık",
+            "consumer": "Tüketici Uyuşmazlığı",
+            "rental_neighbor_condo": "Kira-Komşu-Kat Mülkiyeti Uyuşmazlığı",
+            "dissolution_of_partnership": "Ortaklığın Giderilmesi",
+            "family_law": "Aile Hukuku",
+            "other": "Diğer"
+        }
+        display_name = category_mapping.get(dispute_category, dispute_category)
+        self.selected_dispute_label.text = f"Uyuşmazlık Kategorisi: {display_name}"
 
     def calculate_fee(self, instance):
         app = App.get_running_app()
