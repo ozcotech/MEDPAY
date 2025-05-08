@@ -60,7 +60,7 @@ This repo will include installation instructions and packaging guides once the U
 * [x] TariffModel implemented (`tariff_model.py`)
 * [x] FeeCalculator implemented (`fee_calculator.py`)
 * [x] FeeController implemented (`fee_controller.py`)
-* [ ] UI screens setup
+* [x] UI screens setup (StartScreen, DisputeTypeScreen, DisputeCategoryScreen, DisputeDetailScreen, NonAgreementDetailScreen, ResultScreen)
 * [ ] Tests and validation
 
 ## 🖼️ Screenshots
