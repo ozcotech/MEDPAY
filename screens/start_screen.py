@@ -13,7 +13,7 @@ class StartScreen(Screen):
         
         layout = BoxLayout(orientation='vertical', spacing=dp(20), padding=dp(40))
         
-        # Uygulama başlığı
+        # Application title
         title = Label(
             text="MEDPAY - Arabuluculuk Ücreti Hesaplama",
             font_size=dp(20),
@@ -21,7 +21,7 @@ class StartScreen(Screen):
         )
         layout.add_widget(title)
         
-        # Giriş butonu
+        # Start button
         start_button = Button(
             text="Giriş",
             size_hint=(1, 0.2),
@@ -33,5 +33,5 @@ class StartScreen(Screen):
         self.add_widget(layout)
 
     def goto_next(self, instance):
-        # Bu kısım sonraki ekran tanımlandığında değiştirilecek
-        self.manager.current = "dispute_type"  # placeholder ekran adı
+        # This part will be changed when the next screen is defined
+        self.manager.current = "dispute_type"  # placeholder screen name
