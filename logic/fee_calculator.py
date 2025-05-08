@@ -73,11 +73,7 @@ class FeeCalculator:
                     fee = one_hour_fee * 2
             else:
                 # Non-agreement (e.g., state-paid), apply adjusted calculation
-                one_hour_fee = self.model.get_non_monetary_fee(dispute_type, party_key)
-                if party_key == "2_kisi" and one_hour_fee is not None:
-                    fee = one_hour_fee * 2 * 2  # 2 parties * 2 hours
-                elif one_hour_fee is not None:
-                    fee = one_hour_fee * 2  # Group fee * 2 hours
+                fee = self.model.get_non_monetary_nonagreement_fee(dispute_type, party_key)
 
         # If it's a serial dispute, compare and take the higher fee.
         if is_serial:
