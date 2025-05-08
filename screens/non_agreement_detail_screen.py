@@ -48,16 +48,21 @@ class NonAgreementDetailScreen(Screen):
             self.result_label.text = "Lütfen geçerli bir sayı girin."
             return
 
-        from logic.fee_calculator import FeeCalculator
-        calculator = FeeCalculator()
+        from models.tariff_model import TariffModel
+        model = TariffModel()
 
-        fee = calculator.calculate_fee(
-            is_monetary=False,
+        if party_count == 2:
+            party_key = "2_kisi"
+        elif 3 <= party_count <= 5:
+            party_key = "3_5_kisi"
+        elif 6 <= party_count <= 10:
+            party_key = "6_10_kisi"
+        else:
+            party_key = "11_ve_uzeri"
+
+        fee = model.get_non_monetary_nonagreement_fee(
             dispute_type=dispute_category,
-            party_key=str(party_count) + "_kisi",
-            is_agreement=False,
-            is_serial=False,
-            category="genel"
+            party_key=party_key
         )
 
         self.result_label.text = f"Arabuluculuk Ücreti: {fee:.2f} TL"
