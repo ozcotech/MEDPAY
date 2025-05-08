@@ -46,10 +46,10 @@ class TariffModel:
         if hourly_fee is None:
             return None
 
-        if party_key == "2_kisi":
+        if mapped_party_key == "2_parties":
             return hourly_fee * 4  # 2 parties × 2 hours
         else:
-            return hourly_fee * 2  # 2+ parties × 2 hours
+            return hourly_fee * 2  # 3 or more parties × 2 hours
 
     def _map_party_key(self, key: str) -> str:
         """Maps UI friendly party keys to data structure keys."""
