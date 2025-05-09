@@ -5,9 +5,10 @@ from kivy.uix.label import Label
 from kivy.metrics import dp
 from kivy.app import App
 from functools import partial
+from typing import Any
 
 class DisputeCategoryScreen(Screen):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
         layout = GridLayout(cols=2, padding=dp(20), spacing=dp(15), row_force_default=True, row_default_height=dp(60))
@@ -42,10 +43,10 @@ class DisputeCategoryScreen(Screen):
 
         self.add_widget(layout)
 
-    def select_category(self, category_key, *args):
+    def select_category(self, category_key: str, *args: Any) -> None:
         app = App.get_running_app()
         app.selected_dispute["kategori"] = category_key
-        if app.selected_dispute.get("anlasma"):  # "durum" anahtarı "anlasma" olarak değiştirildi
+        if app.selected_dispute.get("anlasma"):  
             self.manager.current = "dispute_detail"
         else:
             self.manager.current = "non_agreement_detail"
