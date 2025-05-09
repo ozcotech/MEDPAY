@@ -4,9 +4,10 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.metrics import dp
 from kivy.app import App
+from typing import Any
 
 class DisputeTypeScreen(Screen):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(15))
 
@@ -23,12 +24,12 @@ class DisputeTypeScreen(Screen):
 
         self.add_widget(self.layout)
 
-    def add_status_button(self, label: str, is_agreement: bool):
+    def add_status_button(self, label: str, is_agreement: bool) -> None:
         btn = Button(text=label, size_hint=(1, 0.2), font_size=dp(18))
         btn.bind(on_release=lambda instance: self.set_status_and_continue(is_agreement))
         self.layout.add_widget(btn)
 
-    def set_status_and_continue(self, is_agreement: bool):
+    def set_status_and_continue(self, is_agreement: bool) -> None:
         app = App.get_running_app()
         app.selected_dispute = {"anlasma": is_agreement}
         self.manager.current = "dispute_category"
