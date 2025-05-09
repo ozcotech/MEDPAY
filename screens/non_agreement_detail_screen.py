@@ -5,10 +5,11 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.metrics import dp
 from kivy.app import App
+from typing import Any
 
 
 class NonAgreementDetailScreen(Screen):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(15))
 
@@ -34,7 +35,7 @@ class NonAgreementDetailScreen(Screen):
 
         self.add_widget(self.layout)
 
-    def on_enter(self):
+    def on_enter(self) -> None:
         app = App.get_running_app()
         dispute_category = app.selected_dispute.get("kategori", "Belirtilmemiş")
         category_mapping = {
@@ -49,7 +50,7 @@ class NonAgreementDetailScreen(Screen):
         display_name = category_mapping.get(dispute_category, dispute_category)
         self.selected_dispute_label.text = f"Uyuşmazlık Kategorisi: {display_name}"
 
-    def calculate_fee(self, instance):
+    def calculate_fee(self, instance: Any) -> None:
         app = App.get_running_app()
         dispute_category = app.selected_dispute.get("kategori", "")
         try:
