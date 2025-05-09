@@ -5,10 +5,11 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.metrics import dp
 from kivy.app import App
+from typing import Any
 
 
 class DisputeDetailScreen(Screen):
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
         self.layout = BoxLayout(orientation='vertical', padding=dp(20), spacing=dp(15))
@@ -68,16 +69,16 @@ class DisputeDetailScreen(Screen):
 
         self.add_widget(self.layout)
 
-    def calculate_fee(self, instance):
+    def calculate_fee(self, instance: Any) -> None:
         try:
             amount = float(self.amount_input.text)
             parties = int(self.party_input.text)
 
             app = App.get_running_app()
-            selected_dispute_category = app.selected_dispute.get("kategori", "general") # "tur" "kategori" olarak değiştirildi
+            selected_dispute_category = app.selected_dispute.get("kategori", "general") # "tur" changed to "kategori"
             # Placeholder for calculation - replace with real logic
             fee = amount * 0.06
-            if selected_dispute_category == "commercial" and fee < 9000: # selected_dispute selected_dispute_category olarak değiştirildi
+            if selected_dispute_category == "commercial" and fee < 9000: # selected_dispute changed selected_dispute_category 
                 fee = 9000
             elif fee < 6000:
                 fee = 6000
