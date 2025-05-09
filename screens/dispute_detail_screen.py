@@ -75,14 +75,38 @@ class DisputeDetailScreen(Screen):
             parties = int(self.party_input.text)
 
             app = App.get_running_app()
-            selected_dispute_category = app.selected_dispute.get("kategori", "general") # "tur" changed to "kategori"
-            # Placeholder for calculation - replace with real logic
-            fee = amount * 0.06
-            if selected_dispute_category == "commercial" and fee < 9000: # selected_dispute changed selected_dispute_category 
-                fee = 9000
-            elif fee < 6000:
-                fee = 6000
-
+            selected_dispute_category = app.selected_dispute.get("kategori", "general")
+            is_agreement = app.selected_dispute.get("anlasma", True)  # Should be True in this screen
+            
+            # Use the FeeController to calculate the fee
+            from controllers.fee_controller import FeeController
+            controller = FeeController()
+            
+            # Determine party key based on party count
+            if parties == 2:
+                party_key = "2_kisi"
+            elif 3 <= parties <= 5:
+                party_key = "3_5_kisi"
+            elif 6 <= parties <= 10:
+                party_key = "6_10_kisi"
+            else:
+                party_key = "11_ve_uzeri"
+            
+            # Prepare input data for fee calculation
+            input_data = {
+                "is_monetary": True,  # This screen is for monetary disputes
+                "amount": amount,
+                "dispute_type": selected_dispute_category,
+                "party_key": party_key,
+                "is_agreement": is_agreement,
+                "is_serial": False,  # Default to non-serial dispute
+                "category": "commercial_or_joint" if selected_dispute_category == "commercial" else "general",
+                "multiple_mediators": False  # Default to single mediator
+            }
+            
+            # Calculate the fee using the controller
+            fee = controller.calculate_fee_from_input(input_data)
+            
             self.result_label.text = f"Arabuluculuk Ücreti: {fee:.2f} TL"
 
         except ValueError:
