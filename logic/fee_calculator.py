@@ -42,24 +42,44 @@ class FeeCalculator:
 
             # Retrieve monetary brackets and determine the applicable one based on amount.
             brackets = self.model.get_monetary_brackets()
-            
-            # Loop through each monetary bracket to find the matching range
-            for bracket_id, bracket in brackets.items():
-                min_amt = bracket["min_amount"]
-                max_amt = bracket["max_amount"]
-                
-                # Choose the appropriate rate based on whether there are multiple mediators
-                rate_key = "multiple_mediators" if multiple_mediators else "single_mediator"
-                rate = bracket[rate_key]
-                
-                # Check if the amount falls within this bracket
-                if max_amt is None:  # For the highest bracket (26520000+)
-                    if amount >= min_amt:
+
+            if is_agreement:
+                fee = 0.0
+                remaining = amount
+                for bracket in brackets.values():
+                    min_amt = bracket["min_amount"]
+                    max_amt = bracket["max_amount"]
+                    rate_key = "multiple_mediators" if multiple_mediators else "single_mediator"
+                    rate = bracket[rate_key]
+
+                    if max_amt is None:
+                        applicable = max(0, remaining)
+                    else:
+                        applicable = max(0, min(remaining, max_amt - min_amt))
+
+                    fee += applicable * (rate / 100)
+                    remaining -= applicable
+
+                    if remaining <= 0:
+                        break
+            else:
+                # Loop through each monetary bracket to find the matching range
+                for bracket_id, bracket in brackets.items():
+                    min_amt = bracket["min_amount"]
+                    max_amt = bracket["max_amount"]
+
+                    # Choose the appropriate rate based on whether there are multiple mediators
+                    rate_key = "multiple_mediators" if multiple_mediators else "single_mediator"
+                    rate = bracket[rate_key]
+
+                    # Check if the amount falls within this bracket
+                    if max_amt is None:  # For the highest bracket (26520000+)
+                        if amount >= min_amt:
+                            fee = amount * (rate / 100)  # Convert percentage to decimal
+                            break
+                    elif min_amt <= amount <= max_amt:
                         fee = amount * (rate / 100)  # Convert percentage to decimal
                         break
-                elif min_amt <= amount <= max_amt:
-                    fee = amount * (rate / 100)  # Convert percentage to decimal
-                    break
 
         else:
             if not dispute_type or not party_key:
@@ -67,13 +87,11 @@ class FeeCalculator:
 
             # New logic for non-monetary fee calculation based on agreement and party count
             if is_agreement:
-                # Use the 1-hour rate and multiply by 2 for minimum required 2 hours
-                one_hour_fee = self.model.get_non_monetary_fee(dispute_type, party_key)
-                if one_hour_fee is not None:
-                    fee = one_hour_fee * 2
+                # Use the dedicated method for agreement fee calculation (2 hours minimum)
+                fee = self.model.get_non_monetary_agreement_fee(dispute_type, party_key) or 0.0
             else:
                 # Non-agreement (e.g., state-paid), apply adjusted calculation
-                fee = self.model.get_non_monetary_nonagreement_fee(dispute_type, party_key)
+                fee = self.model.get_non_monetary_nonagreement_fee(dispute_type, party_key) or 0.0
 
         # If it's a serial dispute, compare and take the higher fee.
         if is_serial:
