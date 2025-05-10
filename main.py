@@ -8,6 +8,7 @@ from screens.non_agreement_detail_screen import NonAgreementDetailScreen
 from screens.result_screen import ResultScreen
 
 class MedPayApp(App):
+    title = "MEDPAY"
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.selected_dispute = {}
