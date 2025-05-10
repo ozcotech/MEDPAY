@@ -69,6 +69,21 @@ class DisputeDetailScreen(Screen):
 
         self.add_widget(self.layout)
 
+    def on_pre_enter(self):
+        category_labels = {
+            "employment_dispute": "İşçi-İşveren Uyuşmazlığı",
+            "commercial": "Ticari Uyuşmazlık",
+            "consumer": "Tüketici Uyuşmazlığı",
+            "rental_neighbor_condo": "Kira/Komşu/Kat Mülkiyeti",
+            "dissolution_of_partnership": "Ortaklığın Giderilmesi",
+            "family_law": "Aile Hukuku",
+            "other": "Diğer"
+        }
+
+        selected_key = App.get_running_app().selected_dispute.get("kategori", "other")
+        category_label = category_labels.get(selected_key, "Diğer")
+        self.title_label.text = f"Uyuşmazlık Kategorisi: {category_label}"
+
     def calculate_fee(self, instance: Any) -> None:
         try:
             amount = float(self.amount_input.text)
